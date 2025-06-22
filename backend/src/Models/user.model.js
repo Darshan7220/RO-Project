@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import slugify from 'slugify';
+
 const { Schema } = mongoose;
 // Define the user schema
 const userSchema = new mongoose.Schema(
@@ -36,6 +38,12 @@ const userSchema = new mongoose.Schema(
             trim: true,
             unique: true,
         },
+        slug: {
+            type: String,
+            unique: true,
+            lowercase: true,
+            trim: true
+        },        
         phonenumber: {
             type: String,
             default: ''
@@ -114,11 +122,33 @@ userSchema.index({ username: 1, email: 1, isVerified: 1, role: 1, updatedAt: 1, 
 
 // Hash password before saving (example middleware)
 userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    // Hash password
+    if (this.isModified('password')) {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+    }
+4
+    // Generate slug from username or firstname+lastname
+    if (!this.slug || this.isModified('username') || this.isModified('firstname') || this.isModified('lastname')) {
+        const baseSlug = slugify(this.username || `${this.firstname} ${this.lastname}`, {
+            lower: true,
+            strict: true,
+        });
+
+        let uniqueSlug = baseSlug;
+        let suffix = 1;
+
+        // Ensure slug uniqueness
+        while (await mongoose.models.User.findOne({ slug: uniqueSlug })) {
+            uniqueSlug = `${baseSlug}-${suffix++}`;
+        }
+
+        this.slug = uniqueSlug;
+    }
+
     next();
 });
+
 
 // Method to compare passwords
 userSchema.methods.comparePassword = async function (candidatePassword) {

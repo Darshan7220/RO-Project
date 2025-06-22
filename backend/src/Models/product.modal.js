@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import slugify from 'slugify';
+
 const { Schema } = mongoose;
 
 const productSchema = new mongoose.Schema({
@@ -6,6 +8,12 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    slug: {
+        type: String,
+        unique: true,
+        lowercase: true,
+        trim: true,
+    },    
     brand: {
         type: String,
         required: true,
@@ -43,5 +51,20 @@ const productSchema = new mongoose.Schema({
         default: true,
     },
 }, { timestamps: true });
+
+productSchema.pre('save', async function (next) {
+    if (!this.isModified('name')) return next();
+
+    const baseSlug = slugify(this.name, { lower: true, strict: true });
+    let uniqueSlug = baseSlug;
+    let suffix = 1;
+
+    while (await mongoose.models.Product.findOne({ slug: uniqueSlug })) {
+        uniqueSlug = `${baseSlug}-${suffix++}`;
+    }
+
+    this.slug = uniqueSlug;
+    next();
+});
 
 export const Product = mongoose.model('Product', productSchema);

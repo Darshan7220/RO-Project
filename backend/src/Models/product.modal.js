@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+<<<<<<< Updated upstream
     slug: {
         type: String,
         unique: true,
@@ -16,6 +17,11 @@ const productSchema = new mongoose.Schema({
     },    
     brand: {
         type: String,
+=======
+    company: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Company',
+>>>>>>> Stashed changes
         required: true,
     },
     type: {

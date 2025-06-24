@@ -22,7 +22,11 @@
     "joi": "^17.13.3",
     "mongoose": "^8.16.0",
     "multer": "^2.0.1",
+<<<<<<< Updated upstream
     "slugify": "^1.6.6",
+=======
+    "socket.io": "^4.8.1",
+>>>>>>> Stashed changes
     "uuid": "^11.1.0"
   },
   "devDependencies": {

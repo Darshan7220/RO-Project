@@ -1,6 +1,7 @@
 export { default as Footer } from "./Footer";
 export { default as Header } from "./Header";
 export { default as Banner } from "./Banner";
+export { default as CompanyBanner } from "./CompanyBanner";
 export { default as Button } from "./Button";
 export { default as HomeCollectionFilter } from "./HomeCollectionFilter";
 export { default as ProductItem } from "./ProductItem";
@@ -15,7 +16,9 @@ export { default as QuantityInput } from "./QuantityInput";
 export { default as ProductGridWrapper } from "./ProductGridWrapper";
 export { default as ShopPageContent } from "./ShopPageContent";
 export { default as CategoryItem } from "./CategoryItem";
+export { default as CompanyItem } from "./CompanyItem";
 export { default as CategoriesSection } from "./CategoriesSection";
+export { default as CompanySection } from "./CompanySection";
 export { default as SidebarMenu } from "./SidebarMenu";
 export { default as Dropdown } from "./Dropdown";
 export { default as ScrollToTop } from "./ScrollToTop";

@@ -18,10 +18,15 @@ import { checkoutAction, searchAction } from "./actions/index";
 import { shopCategoryLoader } from "./pages/Shop";
 import { loader as orderHistoryLoader } from "./pages/OrderHistory";
 import { loader as singleOrderLoader } from "./pages/SingleOrderHistory";
+import CompanySelector from "./pages/CompanySelector";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <CompanySelector />,
+  },
+  {
+    path: "/:companyName",
     element: <HomeLayout />,
     children: [
       {
@@ -79,7 +84,7 @@ const router = createBrowserRouter([
       {
         path: "order-history/:id",
         element: <SingleOrderHistory />,
-        loader: singleOrderLoader
+        loader: singleOrderLoader,
       },
     ],
   },
